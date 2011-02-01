@@ -12,14 +12,13 @@ class FamilyControllerTests extends ControllerUnitTestCase {
     }
 
     void testControllerReturnsFamilyAndSatSessions() {
-		//this set up is making it clear that we need to inject 
-		//some services into the equation
+		//this set up is making it clear that we need to inject some services into the equation
 		def familyId = 3
 		def testFam = new Family(name: "X",id: familyId)
 		mockDomain(Family,[testFam])
 		testFam.save()
-		def ses = new SittingSession(id:1,hoursAwake:2,hoursAsleep:2,children:1)
-		def ses2 = new SittingSession(id:2,hoursAwake:2,hoursAsleep:2,children:1)
+		def ses = new SittingSession(id:1,hoursAwake:2,hoursAsleep:2,children:1,date: new Date())
+		def ses2 = new SittingSession(id:2,hoursAwake:2,hoursAsleep:2,children:1,date: new Date())
 		mockDomain(SittingSession,[ses,ses2])
 		ses.setSatFamily(testFam)
 		ses.setSittingFamily(testFam)

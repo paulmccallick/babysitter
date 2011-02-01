@@ -14,11 +14,12 @@ class FamilySittingSessionIntegrationTests extends GroovyTestCase {
     void testAddingSessionsToFamilyAndFindingSittingSession() {
 		def fam1 = new Family(name:'fam1')
 		def fam2 = new Family(name:'fam2')
-		def ses = new SittingSession(satFamily:fam1, sittingFamily:fam2, children:2,hours:1)
-		assert fam1.save()
-		assert fam2.save()
+		assert fam1.save(failOnError:true)
+		assert fam2.save(failOnError:true)
+		def ses = new SittingSession(satFamily:fam1, sittingFamily:fam2, children:2,hours:1,date:new Date())
 
-		sittingFamily:fam1
+
+		ses.save(failOnError:true)
 		def sesid = ses.id
 		assertNotNull sesid
 

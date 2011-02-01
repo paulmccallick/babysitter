@@ -1,5 +1,6 @@
 import babysitter.Family
 import babysitter.SittingSession
+import groovy.time.*
 
 class BootStrap {
 
@@ -11,19 +12,19 @@ class BootStrap {
 			
 		}
 		if(!SittingSession.count()){
-			new SittingSession(hoursAwake:2,hoursAsleep:1,children:1,
+			new SittingSession(hoursAwake:2,hoursAsleep:1,children:1, date: new Date(),
 				satFamily:Family.findByName('Scorcese'),
 				sittingFamily:Family.findByName('Kubrick')).save(failOnError:true)
 				
-			new SittingSession(hoursAwake:1,hoursAsleep:2,children:1,
+			new SittingSession(hoursAwake:1,hoursAsleep:2,children:1, date: new Date(),
 				satFamily:Family.findByName('Tarantino'),
 				sittingFamily:Family.findByName('Kubrick')).save(failOnError:true)
 				
-			new SittingSession(hoursAwake:1,hoursAsleep:2,children:1,
+			new SittingSession(hoursAwake:1,hoursAsleep:2,children:1, date: new Date(),
 				satFamily:Family.findByName('Tarantino'),
 				sittingFamily:Family.findByName('Scorcese')).save(failOnError:true)
 				
-			new SittingSession(hoursAwake:1,hoursAsleep:2,children:1,
+			new SittingSession(hoursAwake:1,hoursAsleep:2,children:1, date: new Date(),
 				satFamily:Family.findByName('Scorcese'),
 				sittingFamily:Family.findByName('Tarantino')).save(failOnError:true)
 
