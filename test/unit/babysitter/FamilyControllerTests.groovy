@@ -1,6 +1,7 @@
 package babysitter
 
 import grails.test.*
+import org.joda.time.*
 
 class FamilyControllerTests extends ControllerUnitTestCase {
     protected void setUp() {
@@ -17,8 +18,8 @@ class FamilyControllerTests extends ControllerUnitTestCase {
 		def testFam = new Family(name: "X",id: familyId)
 		mockDomain(Family,[testFam])
 		testFam.save()
-		def ses = new SittingSession(id:1,hoursAwake:2,hoursAsleep:2,children:1,date: new Date())
-		def ses2 = new SittingSession(id:2,hoursAwake:2,hoursAsleep:2,children:1,date: new Date())
+		def ses = new SittingSession(id:1,hoursAwake:2,hoursAsleep:2,children:1,startDate: new DateTime(),endDate: new DateTime())
+		def ses2 = new SittingSession(id:2,hoursAwake:2,hoursAsleep:2,children:1,startDate: new DateTime(),endDate: new DateTime())
 		mockDomain(SittingSession,[ses,ses2])
 		ses.setSatFamily(testFam)
 		ses.setSittingFamily(testFam)

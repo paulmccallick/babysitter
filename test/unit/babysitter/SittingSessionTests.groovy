@@ -1,6 +1,7 @@
 package babysitter
 
 import grails.test.*
+import org.joda.time.*
 
 class SittingSessionTests extends GrailsUnitTestCase {
     protected void setUp() {
@@ -15,7 +16,7 @@ class SittingSessionTests extends GrailsUnitTestCase {
 		//mockForConstraints(Family)
 		mockForConstraintsTests(SittingSession)
 		def sat = new Family(name:'x')
-		def ses = new SittingSession(hoursAwake:2,hoursAsleep:1,children:1,date:new Date())
+		def ses = new SittingSession(hoursAwake:2,hoursAsleep:1,children:1,startDate:new DateTime(),endDate: new DateTime())
 		
 		assertFalse ses.validate()
 		assertEquals "nullable", ses.errors["satFamily"] 

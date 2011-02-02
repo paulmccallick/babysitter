@@ -8,4 +8,8 @@ class SittingSessionService {
 	double getPointsForSession(SittingSession session){
 		(session.hoursAsleep + (2 * session.hoursAwake)) * session.children
 	}
+	
+	def createSession(def params){
+		
+	}
 }

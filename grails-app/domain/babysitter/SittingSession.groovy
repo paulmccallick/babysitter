@@ -1,4 +1,6 @@
 package babysitter
+import org.joda.time.*
+import org.joda.time.contrib.hibernate.*
 
 class SittingSession {
 
@@ -6,12 +8,20 @@ class SittingSession {
 		sittingFamily(nullable:true)
     }
 	
+	static mapping = {
+		startDate type: PersistentDateTime
+		endDate type: PersistentDateTime
+		
+	}
+	
 	double hoursAwake
 	double hoursAsleep
 	int children
 	Family sittingFamily
 	Family satFamily
-	Date date
+	DateTime startDate
+	DateTime endDate
+		
 	def sittingSessionService
 	
 	def getPoints(){

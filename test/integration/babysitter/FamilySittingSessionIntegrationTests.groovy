@@ -1,6 +1,7 @@
 package babysitter
 
 import grails.test.*
+import org.joda.time.*
 
 class FamilySittingSessionIntegrationTests extends GroovyTestCase {
     protected void setUp() {
@@ -16,7 +17,7 @@ class FamilySittingSessionIntegrationTests extends GroovyTestCase {
 		def fam2 = new Family(name:'fam2')
 		assert fam1.save(failOnError:true)
 		assert fam2.save(failOnError:true)
-		def ses = new SittingSession(satFamily:fam1, sittingFamily:fam2, children:2,hours:1,date:new Date())
+		def ses = new SittingSession(satFamily:fam1, sittingFamily:fam2, children:2,hours:1,startDate:new DateTime(),endDate: new DateTime())
 
 
 		ses.save(failOnError:true)
