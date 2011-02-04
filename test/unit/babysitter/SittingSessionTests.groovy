@@ -13,10 +13,10 @@ class SittingSessionTests extends GrailsUnitTestCase {
     }
 	
 	void testWhenSavingSatFamilyMustBeSetSittingFamilyCanBeNull(){
-		//mockForConstraints(Family)
+
 		mockForConstraintsTests(SittingSession)
 		def sat = new Family(name:'x')
-		def ses = new SittingSession(hoursAwake:2,hoursAsleep:1,children:1,startDate:new DateTime(),endDate: new DateTime())
+		def ses = DomainGenerator.createSittingSession()
 		
 		assertFalse ses.validate()
 		assertEquals "nullable", ses.errors["satFamily"] 

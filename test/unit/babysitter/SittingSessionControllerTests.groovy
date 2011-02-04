@@ -11,8 +11,34 @@ class SittingSessionControllerTests extends ControllerUnitTestCase {
     protected void tearDown() {
         super.tearDown()
     }
+	
+	void testShow(){
+		
+		def ses = DomainGenerator.createSittingSession()
+		ses.satFamily = new Family(name:'x',id:1)
+		mockDomain(SittingSession,[ses])
+		def c = new SittingSessionController()
+		c.params.id = 1
+		def s = c.show()["sessionInstance"]
+		assertNotNull s
+		assertEquals s,ses
+	}
 
-    void testGivenCompleteDataSaveIsCalledAndControllerRedirectsToShow() {
+    void testCreateNewsUpASittingSessionWithTheRightDefaults() {
+		def c = new SittingSessionController()
+		def res = c.create()
+		def ses = res['sessionInstance']
+		assertNotNull ses.startDate
+		assertEquals ses.startDate.getMonthOfYear(),new DateTime().getMonthOfYear()
+		assertEquals ses.startDate.getDayOfMonth(), new DateTime().getDayOfMonth()
+		assertEquals ses.startDate.getHourOfDay(), 17
+		assertNotNull ses.endDate
+		assertEquals ses.endDate.getMonthOfYear(),new DateTime().getMonthOfYear()
+		assertEquals ses.endDate.getDayOfMonth(), new DateTime().getDayOfMonth()
+		assertEquals ses.endDate.getHourOfDay(), 22
+    }
+	
+	void testSaveCreatesASessionWithTheParamsAndRedirectsToShowWhenNoErrors(){
 		mockDomain(Family,[new Family(name:'x',id:1)])
 		mockDomain(SittingSession)
 		
@@ -24,12 +50,10 @@ class SittingSessionControllerTests extends ControllerUnitTestCase {
 		c.params.startDate = new DateTime()
 		c.params.endDate = new DateTime()
 		
-		def res = c.create()
-		def ses = res['sessionInstance']
-		assertEquals ses.class,SittingSession
-		assertEquals ses.errors.errorCount,0
-		assertEquals ses.satFamily.name,'x'
-		assertNotNull ses.id
+		def res = c.save()
 		assertEquals SittingSession.list().size(),1
-    }
+		assertEquals c.redirectArgs.action,"show"
+		assertEquals c.redirectArgs.id,1
+				
+	}
 }
