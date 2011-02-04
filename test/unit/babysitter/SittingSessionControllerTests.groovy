@@ -2,6 +2,7 @@ package babysitter
 
 import grails.test.*
 import org.joda.time.*
+import grails.plugins.springsecurity.*
 
 class SittingSessionControllerTests extends ControllerUnitTestCase {
     protected void setUp() {
@@ -25,9 +26,15 @@ class SittingSessionControllerTests extends ControllerUnitTestCase {
 	}
 
     void testCreateNewsUpASittingSessionWithTheRightDefaults() {
+		def currentFamily = new Family(name:'x',username:'y')
+		def secControl = mockFor(SpringSecurityService)
+		secControl.demand.getCurrentUser{->currentFamily}
 		def c = new SittingSessionController()
+		c.springSecurityService = secControl.createMock()
 		def res = c.create()
 		def ses = res['sessionInstance']
+		
+		
 		assertNotNull ses.startDate
 		assertEquals ses.startDate.getMonthOfYear(),new DateTime().getMonthOfYear()
 		assertEquals ses.startDate.getDayOfMonth(), new DateTime().getDayOfMonth()
@@ -36,6 +43,9 @@ class SittingSessionControllerTests extends ControllerUnitTestCase {
 		assertEquals ses.endDate.getMonthOfYear(),new DateTime().getMonthOfYear()
 		assertEquals ses.endDate.getDayOfMonth(), new DateTime().getDayOfMonth()
 		assertEquals ses.endDate.getHourOfDay(), 22
+		
+		assertNotNull ses.satFamily.name, 'x'	
+		secControl.verify()
     }
 	
 	void testSaveCreatesASessionWithTheParamsAndRedirectsToShowWhenNoErrors(){

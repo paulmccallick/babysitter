@@ -9,7 +9,7 @@
   <div class="body">
   <g:form action="save" method="post" name="sessionForm">
   <table>
-  	<g:hiddenField name="satFamily.id" value="1"/>
+  	<g:hiddenField name="satFamily.id" value="${sessionInstance.satFamily.id}"/>
   	<tr>
   		<td>Start Date</td>
   		<td><joda:dateTimePicker name="startDate" value="${sessionInstance.startDate}" precision="hour"/></td>

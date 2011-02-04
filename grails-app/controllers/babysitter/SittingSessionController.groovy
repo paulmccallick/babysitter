@@ -1,11 +1,12 @@
 package babysitter
 import org.joda.time.*
+import grails.plugins.springsecurity.Secured
 
 class SittingSessionController {
 
     def index = { }
 	
-	def sittingSessionService
+	def springSecurityService
 	
 	def save = {
 
@@ -22,10 +23,12 @@ class SittingSessionController {
 		[sessionInstance:SittingSession.get(params.id)]
 	}
 	
+	@Secured(['IS_AUTHENTICATED_REMEMBERED'])
 	def create = {
 		def startDate = new DateMidnight().toDateTime().plusHours(17)
 		def endDate = new DateMidnight().toDateTime().plusHours(22)
-		def ses = new SittingSession(startDate:startDate,endDate:endDate)
+		def currentFamily = springSecurityService.getCurrentUser()
+		def ses = new SittingSession(startDate:startDate,endDate:endDate,satFamily:currentFamily)
 		[sessionInstance:ses]
 	}
 }
