@@ -24,6 +24,8 @@ class SittingSessionControllerTests extends ControllerUnitTestCase {
 		assertNotNull s
 		assertEquals s,ses
 	}
+	
+	
 
     void testCreateNewsUpASittingSessionWithTheRightDefaults() {
 		def currentFamily = new Family(name:'x',username:'y')
@@ -51,17 +53,27 @@ class SittingSessionControllerTests extends ControllerUnitTestCase {
 	void testSaveCreatesASessionWithTheParamsAndRedirectsToShowWhenNoErrors(){
 		mockDomain(Family,[new Family(name:'x',id:1)])
 		mockDomain(SittingSession)
-		
+		def now = new DateTime()
+		def later = now.plusHours(2)
 		def c = new SittingSessionController()
 		c.params['satFamily.id'] = 1
 		c.params.hoursAwake = 2d
 		c.params.hoursAsleep = 1d
 		c.params.children = 1
-		c.params.startDate = new DateTime()
-		c.params.endDate = new DateTime()
+		c.params.startDate = now
+		c.params.endDate = later
+		c.params.notes = 'some kind of instructions'
 		
 		def res = c.save()
 		assertEquals SittingSession.list().size(),1
+		def ses = SittingSession.list()[0]
+		assertEquals ses.hoursAwake,2d
+		assertEquals ses.hoursAsleep,1d
+		assertEquals ses.children,1
+		assertEquals ses.startDate, now
+		assertEquals ses.endDate, later
+		assertEquals ses.notes,'some kind of instructions'
+		
 		assertEquals c.redirectArgs.action,"show"
 		assertEquals c.redirectArgs.id,1
 				

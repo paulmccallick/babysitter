@@ -36,6 +36,10 @@
 		<td>Estimated Hours Asleep</td>
 		<td>${sessionInstance.hoursAsleep}</td>
 	</tr>
+	<tr>
+		<td>Notes</td>
+		<td>${sessionInstance.notes}</td>
+	</tr>
   </table>
   </div>
 </body>

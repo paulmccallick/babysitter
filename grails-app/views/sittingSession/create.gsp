@@ -31,6 +31,10 @@
 		<td><g:textField name="hoursAsleep" value="${sessionInstance.hoursAsleep}"/></td>
 	</tr>
 	<tr>
+		<td>Notes</td>
+		<td><g:textArea name="notes" value="${sessionInstance.notes}"/></td>
+	</tr>
+	<tr>
 		<td colspan="2"><g:submitButton name="createButton" value="create"></g:submitButton></td>
 	</tr>
   </table>

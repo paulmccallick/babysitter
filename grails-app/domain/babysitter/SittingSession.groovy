@@ -6,6 +6,7 @@ class SittingSession {
 
     static constraints = {
 		sittingFamily(nullable:true)
+		notes(nullable:true)
     }
 	
 	static mapping = {
@@ -21,6 +22,7 @@ class SittingSession {
 	Family satFamily
 	DateTime startDate
 	DateTime endDate
+	String notes
 		
 	def sittingSessionService
 	
