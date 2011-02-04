@@ -23,6 +23,7 @@ class SittingSession {
 	DateTime startDate
 	DateTime endDate
 	String notes
+	SittingSessionStatus status = SittingSessionStatus.REQUESTED
 		
 	def sittingSessionService
 	

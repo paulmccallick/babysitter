@@ -9,7 +9,11 @@
   <div class="body">
   <table>
   	<tr>
-  		<td>Sat Family<td>
+  		<td>Status</td>
+  		<td>${sessionInstance.status.name }</td>
+	</tr>
+  	<tr>
+  		<td>Sat Family</td>
   		<td><g:fieldValue bean="${sessionInstance}" field="satFamily.name"/></td>
 	</tr>
 	<tr>
