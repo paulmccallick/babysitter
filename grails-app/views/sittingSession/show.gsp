@@ -7,6 +7,8 @@
 </head>
 <body>
   <div class="body">
+  <g:form action="accept" name="sessionForm">
+  <g:hiddenField value="${sessionInstance.id }" name="id"/>
   <table>
   	<tr>
   		<td>Status</td>
@@ -44,7 +46,12 @@
 		<td>Notes</td>
 		<td>${sessionInstance.notes}</td>
 	</tr>
+	
+	<tr>
+		<td colspan="2"><g:if test="${canAccept}"><g:actionSubmit value="I'll do it" action="accept"/></g:if></td>
+	</tr>
   </table>
+  </g:form>
   </div>
 </body>
 </html>

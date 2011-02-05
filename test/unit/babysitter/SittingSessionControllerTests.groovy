@@ -3,6 +3,7 @@ package babysitter
 import grails.test.*
 import org.joda.time.*
 import grails.plugins.springsecurity.*
+import groovy.mock.interceptor.MockFor;
 
 class SittingSessionControllerTests extends ControllerUnitTestCase {
     protected void setUp() {
@@ -13,19 +14,85 @@ class SittingSessionControllerTests extends ControllerUnitTestCase {
         super.tearDown()
     }
 	
-	void testShow(){
-		
+	void testShowGetsTheCorrectInstance(){
 		def ses = DomainGenerator.createSittingSession()
+		def secControl = mockFor(SpringSecurityService)
+		secControl.demand.getCurrentUser{-> new Family(name:'x',id:4)}
 		ses.satFamily = new Family(name:'x',id:1)
 		mockDomain(SittingSession,[ses])
 		def c = new SittingSessionController()
+		c.springSecurityService = secControl.createMock()
 		c.params.id = 1
 		def s = c.show()["sessionInstance"]
 		assertNotNull s
 		assertEquals s,ses
 	}
 	
+	void testWhenCurrentFamilyIsNotSatFamilyAndStatusIsRequestedAcceptIsDisplayed(){
+		createSittingSessionWithAFamilyAndMockDomain()
+		def currentFam = new Family(name:'c',username:'c')
+		def secControl = mockFor(SpringSecurityService)
+		secControl.demand.getCurrentUser{->currentFam}
+		def c = new SittingSessionController()
+		c.springSecurityService = secControl.createMock()
+		c.params.id = 1
+		def a = c.show()["canAccept"]
+		assertNotNull a
+		assertTrue a
+	}
+
+	void testWhenCurrentFamilyIsSatFamilyAcceptIsNotDisplayed(){
+		def ses = createSittingSessionWithAFamilyAndMockDomain()
+		def secControl = mockFor(SpringSecurityService)
+		secControl.demand.getCurrentUser{->ses.satFamily}
+		def c = new SittingSessionController()
+		c.springSecurityService = secControl.createMock()
+		c.params.id = 1
+		def a = c.show()["canAccept"]
+		assertNotNull a
+		assertFalse a
+	}
 	
+	void testWhenStatusIsNotRequestedAcceptIsNotDisplayed(){
+		def ses = createSittingSessionWithAFamilyAndMockDomain()
+		ses.status = SittingSessionStatus.ACCEPTED
+		def secControl = mockFor(SpringSecurityService)
+		secControl.demand.getCurrentUser{->new Family(name:'c',username:'c',id:3)}
+		def c = new SittingSessionController()
+		c.springSecurityService = secControl.createMock()
+		c.params.id = 1
+		def a = c.show()["canAccept"]
+		assertNotNull a
+		assertFalse a
+	}
+	
+	def createSittingSessionWithAFamilyAndMockDomain(){
+		def ses = DomainGenerator.createSittingSession()
+		ses.satFamily = new Family(name:'x',id:1)
+		mockDomain(SittingSession,[ses])
+		ses
+	}
+	
+	void testAcceptingASittingSessionUpdatesSittingFamilyAndStatus(){
+		def currentFamily = new Family(name:'x',username:'y')
+		def secControl = mockFor(SpringSecurityService)
+		secControl.demand.getCurrentUser{->currentFamily}
+		def ses = DomainGenerator.createSittingSession()
+		mockDomain(SittingSession,[ses])
+		SittingSessionController c = new SittingSessionController()
+		c.springSecurityService = secControl.createMock()
+		c.params.id = 1
+		c.accept()
+		secControl.verify()
+		def ses2 = SittingSession.list()[0]
+		assertEquals ses2.id,ses.id
+		assertEquals ses2.status,SittingSessionStatus.ACCEPTED
+		assertEquals ses2.sittingFamily.name,'x'
+		assertEquals c.redirectArgs.action,'show'
+		assertEquals c.redirectArgs.id,ses2.id
+		
+				
+	}
 
     void testCreateNewsUpASittingSessionWithTheRightDefaults() {
 		def currentFamily = new Family(name:'x',username:'y')
@@ -49,6 +116,7 @@ class SittingSessionControllerTests extends ControllerUnitTestCase {
 		assertNotNull ses.satFamily.name, 'x'	
 		secControl.verify()
     }
+	
 	
 	void testSaveCreatesASessionWithTheParamsAndRedirectsToShowWhenNoErrors(){
 		mockDomain(Family,[new Family(name:'x',id:1)])
