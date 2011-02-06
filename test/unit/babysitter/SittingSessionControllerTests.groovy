@@ -14,6 +14,29 @@ class SittingSessionControllerTests extends ControllerUnitTestCase {
         super.tearDown()
     }
 	
+	void testListAvailableReturnsFilteredList(){
+		def ses1 = DomainGenerator.createSittingSession()
+		ses1.satFamily = new Family(name:'x',id:1)
+		def ses2 = DomainGenerator.createSittingSession()
+		ses2.id = 2
+		ses2.satFamily = new Family(name:'y',id:2)
+		def ses3 = DomainGenerator.createSittingSession()
+		ses3.id = 3
+		ses3.satFamily = new Family(name:'z',id:3)
+		mockDomain(SittingSession,[ses1,ses2,ses3])
+		def secControl = mockFor(SpringSecurityService)
+		secControl.demand.getCurrentUser{-> ses3.satFamily} //ses3 shouldn't show up in the list
+		
+		def c = new SittingSessionController()
+		c.springSecurityService = secControl.createMock()
+		def list = c.listAvailable()['sessionList']
+		assertNotNull list
+		assertEquals list.size(),2
+		assertNull list.find{it -> it.id == 3}
+		
+		
+	}
+	
 	void testShowGetsTheCorrectInstance(){
 		def ses = DomainGenerator.createSittingSession()
 		def secControl = mockFor(SpringSecurityService)

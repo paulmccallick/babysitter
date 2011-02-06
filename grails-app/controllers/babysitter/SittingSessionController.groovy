@@ -3,11 +3,16 @@ import org.joda.time.*
 import grails.plugins.springsecurity.Secured
 
 class SittingSessionController {
-
-    def index = { }
 	
 	def springSecurityService
 	
+	@Secured(['IS_AUTHENTICATED_REMEMBERED'])
+	def listAvailable = {
+		def c = SittingSession.findAllByStatusAndSatFamilyNotEqual(SittingSessionStatus.REQUESTED,springSecurityService.getCurrentUser())
+		[sessionList:c]
+	}
+	
+	@Secured(['IS_AUTHENTICATED_REMEMBERED'])
 	def save = {
 
 		def ses = new SittingSession(params)
@@ -19,10 +24,11 @@ class SittingSessionController {
 		}
 	}
 	
+	@Secured(['IS_AUTHENTICATED_REMEMBERED'])
 	def show = {
 		def ses = SittingSession.get(params.id)
 		def currentFam = springSecurityService.getCurrentUser()
-		def canAccept = (ses.status == SittingSessionStatus.REQUESTED & currentFam.id != ses.satFamily.id)
+		def canAccept = (ses.status == SittingSessionStatus.REQUESTED && currentFam.id != ses.satFamily.id)
 		[sessionInstance:SittingSession.get(params.id),canAccept:canAccept]
 	}
 	

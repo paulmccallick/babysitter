@@ -8,7 +8,10 @@
         <g:javascript library="application" />
     </head>
     <body>
-        <div class="nav"><a href="${createLink(action:'create',controller:'sittingSession')}">Request A Sitter</a></div>
+        <div class="nav">
+        	<a href="${createLink(action:'create',controller:'sittingSession')}">Get Some</a> |
+        	<a href="${createLink(action:'listAvailable',controller:'sittingSession') }">Give It Up</a>
+        </div>
         <g:layoutBody />
     </body>
 </html>
