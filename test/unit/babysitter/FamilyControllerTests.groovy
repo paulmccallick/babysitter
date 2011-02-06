@@ -11,6 +11,17 @@ class FamilyControllerTests extends ControllerUnitTestCase {
     protected void tearDown() {
         super.tearDown()
     }
+	
+	void testListReturnsAllFamilyRows(){
+		def fam1 = new Family(name:'x',id:1)
+		def fam2 = new Family(name:'y',id:2)
+		def fam3 = new Family(name:'z',id:2)
+		mockDomain(Family,[fam1,fam2,fam3])
+		def c = new FamilyController()
+		def r = c.list()['familyList']
+		assertNotNull r
+		assertEquals r.size(),3
+	}
 
     void testControllerReturnsFamilyAndSatSessions() {
 		//this set up is making it clear that we need to inject some services into the equation

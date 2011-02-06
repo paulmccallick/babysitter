@@ -8,7 +8,9 @@ class FamilyController {
         redirect(action: "list", params: params)
     }
 
-
+	def list = {
+		[familyList:Family.list()]
+	}
 
     def show = {
         def familyInstance = Family.get(params.id)

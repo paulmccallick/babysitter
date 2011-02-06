@@ -12,21 +12,18 @@
             <div class="dialog">
                 <table>
                     <tbody>
-                    
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="family.id.label" default="Id" /></td>
-                            
                             <td valign="top" class="value">${fieldValue(bean: familyInstance, field: "id")}</td>
-                            
                         </tr>
-                    
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="family.name.label" default="Name" /></td>
-                            
                             <td valign="top" class="value">${fieldValue(bean: familyInstance, field: "name")}</td>
-                            
                         </tr>
-                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="family.points.label" default="Points" /></td>
+                            <td valign="top" class="value">${fieldValue(bean: familyInstance, field: "points")}</td>
+                        </tr>                   
                     </tbody>
                 </table>
                 <table>
