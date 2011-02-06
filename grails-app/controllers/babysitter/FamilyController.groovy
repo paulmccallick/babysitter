@@ -1,4 +1,5 @@
 package babysitter
+import grails.plugins.springsecurity.Secured
 
 class FamilyController {
 
@@ -7,11 +8,12 @@ class FamilyController {
     def index = {
         redirect(action: "list", params: params)
     }
-
+	
+	@Secured(['IS_AUTHENTICATED_REMEMBERED'])
 	def list = {
 		[familyList:Family.list()]
 	}
-
+	@Secured(['IS_AUTHENTICATED_REMEMBERED'])
     def show = {
         def familyInstance = Family.get(params.id)
         if (!familyInstance) {

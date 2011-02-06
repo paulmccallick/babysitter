@@ -23,6 +23,10 @@
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="family.points.label" default="Points" /></td>
                             <td valign="top" class="value">${fieldValue(bean: familyInstance, field: "points")}</td>
+                        </tr>
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="family.email.label" default="Email" /></td>
+                            <td valign="top" class="value">${fieldValue(bean: familyInstance, field: "email")}</td>
                         </tr>                   
                     </tbody>
                 </table>

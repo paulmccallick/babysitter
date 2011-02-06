@@ -8,6 +8,7 @@ class Family extends User {
     }
 	
 	String name;
+	String email;
 	def getPoints(){
 		familyService.calculatePointsForFamily(this)
 	}
