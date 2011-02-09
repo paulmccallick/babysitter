@@ -33,8 +33,6 @@ class SittingSessionControllerTests extends ControllerUnitTestCase {
 		assertNotNull list
 		assertEquals list.size(),2
 		assertNull list.find{it -> it.id == 3}
-		
-		
 	}
 	
 	void testShowGetsTheCorrectInstance(){
@@ -113,8 +111,6 @@ class SittingSessionControllerTests extends ControllerUnitTestCase {
 		assertEquals ses2.sittingFamily.name,'x'
 		assertEquals c.redirectArgs.action,'show'
 		assertEquals c.redirectArgs.id,ses2.id
-		
-				
 	}
 
     void testCreateNewsUpASittingSessionWithTheRightDefaults() {
@@ -140,6 +136,15 @@ class SittingSessionControllerTests extends ControllerUnitTestCase {
 		secControl.verify()
     }
 	
+	void testSaveRedirectsBackToCreateWhenValidateFails(){
+		def mock = new MockFor(SittingSession)
+		mock.demand.save{false}
+		def c = new SittingSessionController()
+		mock.use {
+			c.save()
+			assertEquals c.renderArgs.view,"create"
+		}
+	}
 	
 	void testSaveCreatesASessionWithTheParamsAndRedirectsToShowWhenNoErrors(){
 		mockDomain(Family,[new Family(name:'x',id:1)])
